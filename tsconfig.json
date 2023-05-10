@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "ESNext",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "types": [
+      "jest"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
