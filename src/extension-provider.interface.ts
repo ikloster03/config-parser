@@ -1,3 +1,3 @@
 export interface IExtensionProvider {
-  parse(file: string): unknown;
+  parse(file: string): Promise<unknown>;
 }
