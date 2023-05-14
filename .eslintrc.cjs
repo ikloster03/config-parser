@@ -32,6 +32,10 @@ module.exports = {
       parserOptions: {
         project: ['./tsconfig.dev.json'],
       },
+      rules: {
+        "class-methods-use-this": 'off',
+        "no-underscore-dangle": 'off',
+      }
     },
     {
       files: ['tests/**/*.ts'],
@@ -41,7 +45,4 @@ module.exports = {
       }
     }
   ],
-  rules: {
-    "class-methods-use-this": [false],
-  }
 };
