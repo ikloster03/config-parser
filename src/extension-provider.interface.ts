@@ -1,3 +1,5 @@
-export interface IExtensionProvider {
-  parse(file: string): Promise<unknown>;
+import { FileOrFilepath } from './types';
+
+export interface IExtensionProvider<T = unknown> {
+  parse(file: FileOrFilepath): Promise<T>;
 }

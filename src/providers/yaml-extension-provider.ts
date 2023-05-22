@@ -1,8 +1,9 @@
 import { parse } from 'yaml';
 import { IExtensionProvider } from '../extension-provider.interface';
+import { FileBody } from '../types';
 
-export default class YamlExtensionProvider implements IExtensionProvider {
-  async parse(file: string): Promise<unknown> {
+export default class YamlExtensionProvider<T = unknown> implements IExtensionProvider<T> {
+  async parse(file: FileBody): Promise<T> {
     return new Promise((resolve, reject) => {
       try {
         resolve(parse(file));

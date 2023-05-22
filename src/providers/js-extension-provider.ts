@@ -1,7 +1,8 @@
 import { IExtensionProvider } from '../extension-provider.interface';
+import { Filepath } from '../types';
 
-export default class JsExtensionProvider implements IExtensionProvider {
-  async parse(filepath: string): Promise<unknown> {
+export default class JsExtensionProvider<T = unknown> implements IExtensionProvider<T> {
+  async parse(filepath: Filepath): Promise<T> {
     try {
       const module = await import(filepath);
 
