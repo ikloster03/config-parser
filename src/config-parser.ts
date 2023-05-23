@@ -48,7 +48,13 @@ export class ConfigParser<T = unknown> {
     );
 
     if (!currentProvider) {
-      throw new Error('provider not found');
+      try {
+        throw new Error('provider not found');
+      } catch (e) {
+        return new Promise((resolve, reject) => {
+          reject(e.message);
+        });
+      }
     }
 
     this.rcParser.setProvider(currentProvider.provider);

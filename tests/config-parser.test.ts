@@ -15,6 +15,9 @@ describe('ConfigParser', () => {
 
     const DEFAULT_PATH = __dirname;
 
+    const resultTest: Data = { test: true };
+    const rcFileName = '.testrc.json';
+
     it('should work default', () => {
       const configParser = ConfigParser.register<Data>({
         path: DEFAULT_PATH,
@@ -49,10 +52,22 @@ describe('ConfigParser', () => {
         providers: DEFAULT_PROVIDERS,
       });
 
-      const resultTest: Data = { test: true };
-      const rcFileName = '.testrc.json';
       const result = await configParser.parse(rcFileName);
 
       expect(result).toStrictEqual(resultTest);
+    });
+
+    it('should work with empty path', async () => {
+      const configParser = ConfigParser.register<Data>({
+        path: DEFAULT_PATH,
+        providers: [
+          {
+            provider: new JsonExtensionProvider<Data>(),
+            extensions: ['testjson'],
+          },
+        ],
+      });
+
+      await expect(configParser.parse(rcFileName)).rejects.toMatch(/provider not found/i);
     });
 });
