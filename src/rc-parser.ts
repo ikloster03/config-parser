@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { IExtensionProvider } from './extension-provider.interface';
 import { FileBody, Filepath } from './types';
 import { hasJsExtension } from './tools';
@@ -27,7 +27,7 @@ export default class RcParser<T = unknown> {
       return this.provider.parse(filePath);
     }
 
-    const file: FileBody = fs.readFileSync(filePath, 'utf8');
+    const file: FileBody = readFileSync(filePath, 'utf8');
 
     return this.provider.parse(file);
   }
