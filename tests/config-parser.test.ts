@@ -1,5 +1,7 @@
 import { ConfigParser, ConfigProvider } from '../src/config-parser';
+import JsExtensionProvider from '../src/providers/js-extension-provider';
 import JsonExtensionProvider from '../src/providers/json-extension-provider';
+import YamlExtensionProvider from '../src/providers/yaml-extension-provider';
 
 describe('ConfigParser', () => {
     type Data = {
@@ -55,6 +57,54 @@ describe('ConfigParser', () => {
       const result = await configParser.parse(rcFileName);
 
       expect(result).toStrictEqual(resultTest);
+    });
+
+    it('should parse without extension', async () => {
+      const configParser = ConfigParser.register<Data>({
+        path: DEFAULT_PATH,
+        providers: [
+          {
+            provider: new JsonExtensionProvider<Data>(),
+            extensions: ['json', ''],
+          },
+        ],
+      });
+
+      const result = await configParser.parse('.testrc');
+
+      expect(result).toStrictEqual(resultTest);
+    });
+
+    it('should parse a few providers', async () => {
+      const configParser = ConfigParser.register<Data>({
+        path: DEFAULT_PATH,
+        providers: [
+          {
+            provider: new JsExtensionProvider<Data>(),
+            extensions: ['js', 'ts'],
+          },
+          {
+            provider: new JsonExtensionProvider<Data>(),
+            extensions: ['json', ''],
+          },
+          {
+            provider: new YamlExtensionProvider<Data>(),
+            extensions: ['yaml'],
+          },
+        ],
+      });
+
+      const resultJs = await configParser.parse('.testrc.js');
+      const resultTs = await configParser.parse('.testrc.ts');
+      const resultJson = await configParser.parse('.testrc.json');
+      const resultWithoutExt = await configParser.parse('.testrc');
+      const resultYaml = await configParser.parse('.testrc.yaml');
+
+      expect(resultJs).toStrictEqual(resultTest);
+      expect(resultTs).toStrictEqual(resultTest);
+      expect(resultJson).toStrictEqual(resultTest);
+      expect(resultWithoutExt).toStrictEqual(resultTest);
+      expect(resultYaml).toStrictEqual(resultTest);
     });
 
     it('should work with empty path', async () => {
